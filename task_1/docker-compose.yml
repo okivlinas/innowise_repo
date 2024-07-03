@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345678
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+    environment:
+      - HOST=db
+      - PORT=5432
+      - USER=postgres
+      - PASSWORD=12345678
+      - DATABASE=postgres
+
+volumes:
+  db_data:
